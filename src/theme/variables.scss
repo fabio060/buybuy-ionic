@@ -1,2 +1,24 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+:root {
+  /** primary - O Verde do ÉBarato **/
+  --ion-color-primary: #00a859; 
+  --ion-color-primary-rgb: 0, 168, 89;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #00944e;
+  --ion-color-primary-tint: #1ab26a;
+}
+
+// Aplica a opacidade apenas aos botões de navegação da toolbar
+ion-toolbar ion-button {
+  opacity: 0.6 !important;
+  font-weight: 400 !important;
+  transition: opacity 0.2s ease-in-out;
+  
+  
+  &.active-link {
+    opacity: 1 !important;
+    font-weight: 700 !important;
+    --font-weight: 700 !important;
+  }
+}
+

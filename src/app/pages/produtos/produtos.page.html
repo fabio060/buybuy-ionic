@@ -1,0 +1,154 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-title slot="start">
+      <span style="font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px;">BuyBuy</span>
+      <small style="display: block; font-size: 0.75rem; opacity: 0.8; font-weight: 400;">ÉBarato, Lda.</small>
+    </ion-title>
+
+    <div slot="end" style="display: flex; gap: 5px; margin-right: 20px;">
+      <ion-button routerLink="/folheto" routerDirection="root" fill="clear" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: false }" style="--color: white;">
+        <ion-icon slot="start" name="document-text-outline"></ion-icon> Folheto
+      </ion-button>
+      <ion-button routerLink="/produtos" routerDirection="root" fill="clear" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: false }" style="--color: white;">
+        <ion-icon slot="start" name="cube-outline"></ion-icon> Produtos
+      </ion-button>
+      <ion-button routerLink="/planeamento" routerDirection="root" fill="clear" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: false }" style="--color: white;">
+        <ion-icon slot="start" name="cart-outline"></ion-icon> Planeamento
+      </ion-button>
+      <ion-button routerLink="/mapa" routerDirection="root" fill="clear" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: false }" style="--color: white;">
+        <ion-icon slot="start" name="map-outline"></ion-icon> Mapa
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<div style="display: flex; width: 100vw; height: calc(100vh - 56px); overflow: hidden; background-color: #121212;">
+  
+  <main style="width: 80%; height: 100%; overflow-y: auto; background-color: #1a1a1a; padding: 25px;">
+    
+    <h2 style="font-weight: 700; color: white; margin-bottom: 5px;">Todos os Produtos</h2>
+    <p style="color: #aaa; margin-bottom: 20px; font-size: 0.9rem;">Filtre por categoria e planeie as suas compras normais ou promocionais</p>
+
+    <ion-searchbar placeholder="Pesquisar produtos..." (ionInput)="filtrarPorPesquisa($event)" style="--background: #222; --color: white; --placeholder-color: #777; padding: 0; margin-bottom: 20px; border-radius: 8px;"></ion-searchbar>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap;">
+      <ion-button [color]="categoriaSelecionada === 'Todos' ? 'primary' : 'dark'" (click)="filtrarCategoria('Todos')" style="--border-radius: 20px; font-weight: 600;">
+        Todos
+      </ion-button>
+      <ion-button [color]="categoriaSelecionada === 'Mercearia' ? 'primary' : 'dark'" (click)="filtrarCategoria('Mercearia')" style="--border-radius: 20px; font-weight: 600;">
+        Mercearia
+      </ion-button>
+      <ion-button [color]="categoriaSelecionada === 'Laticínios' ? 'primary' : 'dark'" (click)="filtrarCategoria('Laticínios')" style="--border-radius: 20px; font-weight: 600;">
+        Laticínios
+      </ion-button>
+      <ion-button [color]="categoriaSelecionada === 'Pequeno Almoço' ? 'primary' : 'dark'" (click)="filtrarCategoria('Pequeno Almoço')" style="--border-radius: 20px; font-weight: 600;">
+        Pequeno Almoço
+      </ion-button>
+      <ion-button [color]="categoriaSelecionada === 'Limpeza' ? 'primary' : 'dark'" (click)="filtrarCategoria('Limpeza')" style="--border-radius: 20px; font-weight: 600;">
+        Limpeza
+      </ion-button>
+      <ion-button [color]="categoriaSelecionada === 'Higiene' ? 'primary' : 'dark'" (click)="filtrarCategoria('Higiene')" style="--border-radius: 20px; font-weight: 600;">
+        Higiene
+      </ion-button>
+      <ion-button [color]="categoriaSelecionada === 'Frutas' ? 'primary' : 'dark'" (click)="filtrarCategoria('Frutas')" style="--border-radius: 20px; font-weight: 600;">
+        Frutas
+      </ion-button>
+      <ion-button [color]="categoriaSelecionada === 'Bebidas' ? 'primary' : 'dark'" (click)="filtrarCategoria('Bebidas')" style="--border-radius: 20px; font-weight: 600;">
+        Bebidas
+      </ion-button>
+      <ion-button [color]="categoriaSelecionada === 'Padaria' ? 'primary' : 'dark'" (click)="filtrarCategoria('Padaria')" style="--border-radius: 20px; font-weight: 600;">
+        Padaria
+      </ion-button>
+    </div>
+
+    <ion-grid style="padding: 0;">
+      <ion-row>
+        @for (produto of produtosFiltrados; track produto.id) {
+          <ion-col size="12" size-md="6" size-lg="4" style="padding: 10px;">
+            <ion-card style="margin: 0; background: #222; border: 1px solid #333; border-radius: 10px; color: white; position: relative;">
+              
+              @if (produto.emPromocao && produto.precoOriginal !== produto.precoPromo) {
+                <div style="position: absolute; top: 10px; right: 10px; background: #e53935; color: white; padding: 4px 8px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; z-index: 10;">
+                  Promoção
+                </div>
+              }
+
+              <img [src]="produto.imagem" [alt]="produto.nome" style="width: 100%; height: 160px; object-fit: cover; border-bottom: 1px solid #333; background: white;" />
+
+              <ion-card-header style="padding: 15px 15px 5px 15px;">
+                <ion-card-subtitle style="color: #00a859; font-weight: 600; text-transform: uppercase; font-size: 0.75rem;">{{ produto.categoria }}</ion-card-subtitle>
+                <ion-card-title style="color: white; font-size: 1.05rem; font-weight: 600; margin-top: 2px;">{{ produto.nome }}</ion-card-title>
+              </ion-card-header>
+
+              <ion-card-content style="padding: 0 15px 15px 15px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+                  @if (produto.emPromocao && produto.precoOriginal !== produto.precoPromo) {
+                    <span style="text-decoration: line-through; color: #777; font-size: 0.9rem;">{{ produto.precoOriginal | currency:'EUR' }}</span>
+                    <span style="color: #e53935; font-size: 1.3rem; font-weight: 700;">{{ produto.precoPromo | currency:'EUR' }}</span>
+                  } @else {
+                    <span style="color: white; font-size: 1.3rem; font-weight: 700;">{{ produto.precoOriginal | currency:'EUR' }}</span>
+                  }
+                </div>
+
+                <p style="margin: 5px 0; font-size: 0.8rem; color: #aaa;">📍 {{ produto.corredor }}</p>
+                <p style="margin: 5px 0 15px 0; font-size: 0.8rem; color: #aaa;">📦 Stock: <span [style.color]="produto.stock === 'Esgotado' ? '#e53935' : '#00a859'">{{ produto.stock }}</span></p>
+
+                <ion-button expand="block" color="primary" style="--border-radius: 6px; font-weight: 600;" (click)="adicionarA_Lista(produto)" [disabled]="produto.stock === 'Esgotado'">
+                  Adicionar à Lista
+                </ion-button>
+              </ion-card-content>
+
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  </main>
+
+  <aside style="width: 20%; height: 100%; background: #222222; border-left: 1px solid #333333; display: flex; flex-direction: column; padding: 20px; color: white; box-sizing: border-box;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00a859; padding-bottom: 15px;">
+      <h2 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: white; text-transform: uppercase;">Lista</h2>
+      <ion-badge color="primary" style="font-weight: bold; padding: 6px 10px;">{{ totalItens }} un.</ion-badge>
+    </div>
+
+    <div style="flex-grow: 1; overflow-y: auto; padding: 15px 0;">
+      @if (itensCarrinho.length === 0) {
+        <div style="text-align: center; color: #555; margin-top: 60px;">
+          <ion-icon name="trash-outline" style="font-size: 3rem; color: #333;"></ion-icon>
+          <p style="margin: 10px 0; font-weight: 600;">Lista vazia</p>
+        </div>
+      } @else {
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          @for (item of itensCarrinho; track item.id) {
+            <div style="display: flex; gap: 10px; background: #2d2d2d; padding: 8px; border-radius: 6px; border: 1px solid #3d3d3d; align-items: center;">
+              <img [src]="item.imagem" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; background: white;" />
+              <div style="flex-grow: 1; min-width: 0;">
+                <h4 style="margin: 0; font-size: 0.85rem; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ item.nome }}</h4>
+                <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #00a859; font-weight: 700;">
+                  {{ (item.emPromocao && item.precoOriginal !== item.precoPromo ? item.precoPromo : item.precoOriginal) | currency:'EUR' }}
+                  <small style="color: #aaa; margin-left: 4px;">x{{ item.quantidade }}</small>
+                </p>
+              </div>
+              
+              <ion-button fill="clear" color="danger" style="margin: 0; --padding-start: 5px; --padding-end: 5px;" (click)="removerDaLista(item.id)">
+                <ion-icon name="trash-outline" style="font-size: 1.1rem;"></ion-icon>
+              </ion-button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div style="border-top: 1px solid #333; padding-top: 15px;">
+      <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 15px;">
+        <span style="color: #aaa;">Subtotal:</span>
+        <span style="color: #00a859;">{{ subtotal | currency:'EUR' }}</span>
+      </div>
+      
+      <ion-button color="primary" (click)="concluirCompra()" expand="block" style="--border-radius: 6px; font-weight: 700; margin: 0; height: 40px;" [disabled]="itensCarrinho.length === 0">
+        Finalizar Compra
+      </ion-button>
+    </div>
+  </aside>
+
+</div>

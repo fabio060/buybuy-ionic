@@ -1,0 +1,174 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-title slot="start">
+      <span style="font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px;">BuyBuy</span>
+      <small style="display: block; font-size: 0.75rem; opacity: 0.8; font-weight: 400;">ÉBarato, Lda.</small>
+    </ion-title>
+
+    <div slot="end" style="display: flex; gap: 5px; margin-right: 20px;">
+      <ion-button routerLink="/folheto" routerDirection="root" fill="clear" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: false }" style="--color: white;">
+        <ion-icon slot="start" name="document-text-outline"></ion-icon> Folheto
+      </ion-button>
+      <ion-button routerLink="/produtos" routerDirection="root" fill="clear" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: false }" style="--color: white;">
+        <ion-icon slot="start" name="cube-outline"></ion-icon> Produtos
+      </ion-button>
+      <ion-button routerLink="/planeamento" routerDirection="root" fill="clear" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: false }" style="--color: white;">
+        <ion-icon slot="start" name="cart-outline"></ion-icon> Planeamento
+      </ion-button>
+      <ion-button routerLink="/mapa" routerDirection="root" fill="clear" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: false }" style="--color: white;">
+        <ion-icon slot="start" name="map-outline"></ion-icon> Mapa
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<div style="display: flex; width: 100vw; height: calc(100vh - 56px); overflow: hidden; background-color: #121212;">
+  
+  <main style="width: 80%; height: 100%; overflow-y: auto; background-color: #1a1a1a; padding: 25px;">
+    
+    <h2 style="font-weight: 700; color: white; margin-bottom: 5px;">Planta do Supermercado</h2>
+    <p style="color: #aaa; margin-bottom: 25px; font-size: 0.9rem;">
+      Os corredores destacados a <span style="color: #00a859; font-weight: bold;">Verde</span> indicam onde se encontram os produtos da sua lista atual.
+    </p>
+
+    <!-- [Cenário 3 - Alerta de Recálculo de Rota Otimizada em Tempo Real] -->
+    @if (isRotaNova) {
+      <div style="background: rgba(0, 168, 89, 0.15); border: 2px solid #00a859; padding: 15px 20px; border-radius: 12px; margin-bottom: 25px; max-width: 900px; margin-left: auto; margin-right: auto; display: flex; align-items: center; gap: 15px; animation: fadeIn 0.4s ease-in-out;">
+        <span style="font-size: 1.5rem;">🔄</span>
+        <div>
+          <h4 style="margin: 0; color: #00a859; font-weight: 700; font-size: 0.95rem;">Rota Dinâmica Recalculada!</h4>
+          <p style="margin: 2px 0 0 0; color: #ddd; font-size: 0.85rem;">O percurso de recolha foi reconfigurado automaticamente para incluir o corredor de alternativas disponíveis.</p>
+        </div>
+      </div>
+    }
+
+    <div style="background: #222; border: 1px solid #333; border-radius: 12px; padding: 30px; max-width: 900px; margin: 0 auto;">
+      
+      <div style="display: flex; justify-content: space-between; margin-bottom: 40px; border-bottom: 2px dashed #333; padding-bottom: 20px;">
+        <div style="background: #e53935; color: white; padding: 15px 30px; border-radius: 6px; font-weight: 700; font-size: 0.9rem;">ENTRADA</div>
+        <div style="display: flex; gap: 10px;">
+          <div style="background: #333; color: #888; border: 1px solid #444; width: 60px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 4px; font-size: 0.8rem;">CAIXA 1</div>
+          <div style="background: #333; color: #888; border: 1px solid #444; width: 60px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 4px; font-size: 0.8rem;">CAIXA 2</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px;">
+        
+        <!-- Corredor 1 -->
+        <div [style.border-color]="temNoCorredor('Corredor 1') ? '#00a859' : '#444'"
+             [style.background]="temNoCorredor('Corredor 1') ? 'rgba(0, 168, 89, 0.1)' : '#2d2d2d'"
+             style="border: 2px solid #444; border-radius: 8px; padding: 20px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;">
+          <div>
+            <h3 style="margin: 0; color: white; font-weight: 700; font-size: 1.1rem;">Corredor 1</h3>
+            <p style="margin: 3px 0 0 0; font-size: 0.8rem; color: #aaa;">Laticínios, Ovos e Queijos</p>
+          </div>
+          @if (temNoCorredor('Corredor 1')) {
+            <ion-badge color="success" style="font-weight: 600; padding: 6px 12px;">Visitar Corredor</ion-badge>
+          }
+        </div>
+
+        <!-- Corredor 2 -->
+        <div [style.border-color]="temNoCorredor('Corredor 2') ? '#00a859' : '#444'"
+             [style.background]="temNoCorredor('Corredor 2') ? 'rgba(0, 168, 89, 0.1)' : '#2d2d2d'"
+             style="border: 2px solid #444; border-radius: 8px; padding: 20px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;">
+          <div>
+            <h3 style="margin: 0; color: white; font-weight: 700; font-size: 1.1rem;">Corredor 2</h3>
+            <p style="margin: 3px 0 0 0; font-size: 0.8rem; color: #aaa;">Pequeno Almoço, Cereais e Cafés</p>
+          </div>
+          @if (temNoCorredor('Corredor 2')) {
+            <ion-badge color="success" style="font-weight: 600; padding: 6px 12px;">Visitar Corredor</ion-badge>
+          }
+        </div>
+
+        <!-- Corredor 3 -->
+        <div [style.border-color]="temNoCorredor('Corredor 3') ? '#00a859' : '#444'"
+             [style.background]="temNoCorredor('Corredor 3') ? 'rgba(0, 168, 89, 0.1)' : '#2d2d2d'"
+             style="border: 2px solid #444; border-radius: 8px; padding: 20px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;">
+          <div>
+            <h3 style="margin: 0; color: white; font-weight: 700; font-size: 1.1rem;">Corredor 3</h3>
+            <p style="margin: 3px 0 0 0; font-size: 0.8rem; color: #aaa;">Mercearia, Azeites, Óleos e Arroz</p>
+          </div>
+          @if (temNoCorredor('Corredor 3')) {
+            <ion-badge color="success" style="font-weight: 600; padding: 6px 12px;">Visitar Corredor</ion-badge>
+          }
+        </div>
+
+        <!-- Corredor 4 -->
+        <div [style.border-color]="temNoCorredor('Corredor 4') ? '#00a859' : '#444'"
+             [style.background]="temNoCorredor('Corredor 4') ? 'rgba(0, 168, 89, 0.1)' : '#2d2d2d'"
+             style="border: 2px solid #444; border-radius: 8px; padding: 20px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;">
+          <div>
+            <h3 style="margin: 0; color: white; font-weight: 700; font-size: 1.1rem;">Corredor 4</h3>
+            <p style="margin: 3px 0 0 0; font-size: 0.8rem; color: #aaa;">Limpeza, Detergentes e Higiene</p>
+          </div>
+          @if (temNoCorredor('Corredor 4')) {
+            <ion-badge color="success" style="font-weight: 600; padding: 6px 12px;">Visitar Corredor</ion-badge>
+          }
+        </div>
+
+        <!-- [Cenário 3 - Novo Corredor Dinâmico na Planta] -->
+        <div [style.border-color]="temNoCorredor('Corredor 5 (Alternativas Dinâmicas)') ? '#ffc409' : '#444'"
+             [style.background]="temNoCorredor('Corredor 5 (Alternativas Dinâmicas)') ? 'rgba(255, 196, 9, 0.08)' : '#2d2d2d'"
+             style="border: 2px dashed #444; border-radius: 8px; padding: 20px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;">
+          <div>
+            <h3 style="margin: 0; color: white; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+              Corredor 5 @if(temNoCorredor('Corredor 5 (Alternativas Dinâmicas)')) { <small style="color: #ffc409; font-size: 0.75rem; font-weight: bold; background: rgba(255,196,9,0.15); padding: 2px 6px; border-radius: 4px;">Ativo</small> }
+            </h3>
+            <p style="margin: 3px 0 0 0; font-size: 0.8rem; color: #aaa;">Zona Especial: Alternativas de Stock e Marcas Equivalentes</p>
+          </div>
+          @if (temNoCorredor('Corredor 5 (Alternativas Dinâmicas)')) {
+            <ion-badge color="warning" style="font-weight: 600; padding: 6px 12px; color: #000;">Nova Paragem</ion-badge>
+          }
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <aside style="width: 20%; height: 100%; background: #222222; border-left: 1px solid #333333; display: flex; flex-direction: column; padding: 20px; color: white; box-sizing: border-box;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00a859; padding-bottom: 15px;">
+      <h2 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: white; text-transform: uppercase;">Lista</h2>
+      <ion-badge color="primary" style="font-weight: bold; padding: 6px 10px;">{{ totalItens }} un.</ion-badge>
+    </div>
+
+    <div style="flex-grow: 1; overflow-y: auto; padding: 15px 0;">
+      @if (itensCarrinho.length === 0) {
+        <div style="text-align: center; color: #555; margin-top: 60px;">
+          <ion-icon name="trash-outline" style="font-size: 3rem; color: #333;"></ion-icon>
+          <p style="margin: 10px 0; font-weight: 600;">Lista vazia</p>
+        </div>
+      } @else {
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          @for (item of itensCarrinho; track item.id) {
+            <div style="display: flex; gap: 10px; background: #2d2d2d; padding: 8px; border-radius: 6px; border: 1px solid #3d3d3d; align-items: center;">
+              <img [src]="item.imagem" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; background: white;" />
+              <div style="flex-grow: 1; min-width: 0;">
+                <h4 style="margin: 0; font-size: 0.85rem; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ item.nome }}</h4>
+                <p style="margin: 2px 0 0 0; font-size: 0.8rem; color: #00a859; font-weight: 700;">
+                  {{ (item.emPromocao ? item.precoPromo : item.precoOriginal) | currency:'EUR' }}
+                  <small style="color: #aaa; margin-left: 4px;">x{{ item.quantidade }}</small>
+                </p>
+              </div>
+              
+              <ion-button fill="clear" color="danger" style="margin: 0; --padding-start: 5px; --padding-end: 5px;" (click)="removerDaLista(item.id)">
+                <ion-icon name="trash-outline" style="font-size: 1.1rem;"></ion-icon>
+              </ion-button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div style="border-top: 1px solid #333; padding-top: 15px;">
+      <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 15px;">
+        <span style="color: #aaa;">Subtotal:</span>
+        <span style="color: #00a859;">{{ subtotal | currency:'EUR' }}</span>
+      </div>
+      <ion-button color="primary" expand="block" style="--border-radius: 6px; font-weight: 700; margin: 0; height: 40px;" [disabled]="itensCarrinho.length === 0">
+        Finalizar Compra
+      </ion-button>
+    </div>
+  </aside>
+
+</div>
